@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %} Devspresso {% endblock %}
+{% block content %}
+<div class="div-block-3 w-clearfix">
+  <div class="div-block-2">
+    <footer id="footer" class="section footer wf-section">
+      <div class="w-row">
+        <div class="w-col w-col-6">
+          <h2 id="current-file-title" class="heading">Current File</h2>
+          <div class="w-form">
+            <form id="wf-form-Current-File" name="wf-form-Current-File" data-name="Current File" method="get"><textarea id="Current-File" name="Current-File" maxlength="5000" data-name="Current File" placeholder="Current File" required="" class="field large static w-input"></textarea></form>
+            <div class="w-form-done">
+              <div>Thank you! Your submission has been received!</div>
+            </div>
+            <div class="w-form-fail">
+              <div>Oops! Something went wrong while submitting the form.</div>
+            </div>
+          </div>
+        </div>
+        <div class="w-col w-col-6">
+          <h2 class="heading">Output</h2>
+          <div class="w-form">
+            <form id="wf-form-Output-FIeld" name="wf-form-Output-FIeld" data-name="Output FIeld" method="get"><textarea id="Output-Field" name="Output-Field" maxlength="5000" data-name="Output Field" placeholder="Output" required="" class="field large static w-input"></textarea></form>
+            <div class="w-form-done">
+              <div>Thank you! Your submission has been received!</div>
+            </div>
+            <div class="w-form-fail">
+              <div>Oops! Something went wrong while submitting the form.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <div id="prompt-container" class="section-2 wf-section">
+      <div class="form-block w-form">
+        <form id="wf-form-Prompt-Form" name="wf-form-Prompt-Form" data-name="Prompt Form" method="get" class="form-2"><textarea id="Prompt-Field-2" name="Prompt-Field" maxlength="5000" data-name="Prompt Field" placeholder="Enter your prompt" required="" class="field large w-input"></textarea><input type="submit" value="Go!" data-wait="Please wait..." class="button form w-button"><input type="submit" value="Clear" data-wait="Please wait..." class="button form w-button">
+          <div class="container w-container"><input type="password" class="text-field w-input" maxlength="256" name="OpenAI-API-Key" data-name="OpenAI API Key" placeholder="OpenAI API Key" id="openai-api-key-field" required="">
+            <div class="text-block-2">
+              <a href="https://platform.openai.com/account/api-keys" target="_blank" class="link-2">What&#x27;s this?</a>
+            </div>
+          </div>
+        </form>
+        <div class="w-form-done">
+          <div>Thank you! Your submission has been received!</div>
+        </div>
+        <div class="w-form-fail">
+          <div>Oops! Something went wrong while submitting the form.</div>
+        </div>
+      </div>
+    </div>
+    <p class="footer-text">Devspresso is distributed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="link-4">GNU GPL license</a>. All software based on Devspresso source code must be licensed as open source. See the source code on <a href="https://github.com/modelcamp/devspresso" class="link-3">GitHub</a>.</p>
+  </div>
+  <div id="sidebar" class="div-block sidebar"></div>
+</div>
+
+<script type="text/javascript">
+  let inferencePath = "{{ url_for('infer', model=model_name) }}"
+  let inferenceParamName = "{{ inference_value_key }}"
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/NetworkUtility.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/Index.js') }}"></script>
+{% endblock %}
