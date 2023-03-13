@@ -24,11 +24,11 @@
 <body class="body">
 <div data-collapse="medium" data-animation="default" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" class="navbar w-nav">
     <div class="w-container"><img src="{{ url_for('static', filename='images/devspresso-logo.png') }}" width="65" sizes="(max-width: 767px) 50px, 65px" srcset="{{ url_for('static', filename='images/devspresso-logo.png') }} 500w, {{ url_for('static', filename='images/devspresso-logo.png') }} 800w" alt="" class="logo-img">
-        <a href="#" class="brand-block w-clearfix w-nav-brand">
+        <a href="{{ url_for('index') }}" class="brand-block w-clearfix w-nav-brand">
             <h1 class="logo-title">Devspresso</h1>
         </a>
         <nav role="navigation" class="nav-menu w-nav-menu">
-            <a href="contact.html" class="nav-link w-nav-link">Contact</a>
+            <a href="{{ url_for('contact') }}" class="nav-link w-nav-link">Contact</a>
         </nav>
         <div class="menu-button w-nav-button">
             <div class="w-icon-nav-menu"></div>
