@@ -30,9 +30,9 @@
           <textarea id="prompt-field" name="Prompt-Field" maxlength="5000" data-name="Prompt Field" placeholder="Enter your prompt" required="" class="field large w-input"></textarea>
           <a id="go-button" data-wait="Please wait..." class="button form w-button">Go!</a>
           <a id="clear-button" class="button form w-button">Clear</a>
-          <div class="container w-container"><input class="text-field w-input" maxlength="256" name="openai-organization-id" data-name="OpenAI Organization ID" placeholder="OpenAI Organization ID" id="openai-organization-id-field" value="{{ openai_organization_id_prefill_value }}" required="">
+          <div class="container w-container"><input class="text-field w-input" maxlength="256" name="openai-organization-id" data-name="OpenAI Organization ID" placeholder="OpenAI Organization ID" id="openai-organization-id-field" value="{{ openai_organization_id_prefill_value or '' }}" required="">
           </div>
-          <div class="container w-container"><input type="password" class="text-field w-input" maxlength="256" name="openai-api-key" data-name="OpenAI API Key" placeholder="OpenAI API Key" id="openai-api-key-field" value="{{ openai_key_prefill_value }}" required="">
+          <div class="container w-container"><input type="password" class="text-field w-input" maxlength="256" name="openai-api-key" data-name="OpenAI API Key" placeholder="OpenAI API Key" id="openai-api-key-field" value="{{ openai_key_prefill_value or '' }}" required="">
             <div class="text-block-2">
               <a href="https://platform.openai.com/account/api-keys" target="_blank" class="link-2">What&#x27;s this?</a>
             </div>
@@ -42,8 +42,14 @@
     </div>
     {% include "footer.html" %}
   </div>
-  <div id="sidebar" class="div-block sidebar"></div>
+  <div id="sidebar" class="div-block sidebar">
+    <label for="file-input">Choose a project folder</label>
+    <input type="file" id="file-input" webkitdirectory mozdirectory>
+    <div id="tree"></div>
+  </div>
 </div>
+<link rel="stylesheet" href="{{ url_for('static', filename='tree_viewer/treeview.vanilla.css') }}" />
+<script src="{{ url_for('static', filename='tree_viewer/treeview.vanilla.js') }}" type="module" charset="utf-8"></script>
 <script src="{{ url_for('static', filename='js/src-noconflict/ace.js') }}" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
   let inferencePath = "{{ url_for('infer') }}"
@@ -54,5 +60,5 @@
   let openaiOrganizationIDParamName = "{{ openai_organization_id_param_name }}"
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/NetworkUtility.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/Index.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/Index.js') }}"></script>
 {% endblock %}

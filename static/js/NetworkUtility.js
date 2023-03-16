@@ -7,8 +7,15 @@ function postInference(inferencePath, params, inferenceValueResponseKey, complet
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.onload = () => {
         // Get the response from the server, parsed as JSON.
+        if (xhr.status > 299) {
+            alert('There was an error in the network request: ' + xhr.statusText);
+            return;
+        }
         let response = JSON.parse(xhr.responseText);
         completion(response);
-    }
+    };
+    xhr.onerror = () => {
+        alert('There was an error in the network request: ' + xhr.statusText);
+    };
     xhr.send();
 }

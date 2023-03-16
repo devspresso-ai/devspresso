@@ -582,13 +582,13 @@ p {
   bottom: 0%;
   width: auto;
   height: 90%;
-  max-width: 400px;
-  min-width: 200px;
+  width: 200px;
   margin-top: 100px;
   float: left;
   clear: none;
   border-right: 1px solid #0caf9e;
   background-color: transparent;
+  color: white;
 }
 
 .div-block-2 {

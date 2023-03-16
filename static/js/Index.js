@@ -5,6 +5,9 @@
 // - inferenceLanguageResponseKey
 // - openaiAPIKeyParamName
 // - openaiOrganizationIDParamName
+
+import {VanillaTreeView} from "../tree_viewer/treeview.vanilla.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     let currentFileField = document.getElementById('current-file');
     let outputField = document.getElementById('output-field');
@@ -56,6 +59,53 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add clear button action.
     let clrBtn = document.getElementById('clear-button');
     clrBtn.addEventListener('click', () => {
-        promptField.innerHTML = '';
+        promptField.value = '';
+    });
+
+    // Add file upload responder
+    let fileInput = document.getElementById('file-input');
+    fileInput.addEventListener('change', (e) => {
+        let files = [...e.target.files];
+        let file = files[0];
+        console.log(files);
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            let fileText = e.target.result;
+            currentFileEditor.setValue(fileText);
+        };
+        reader.readAsText(file);
+
+        // Setup tree view
+        let tree = new VanillaTreeView(document.getElementById('tree'), {
+            provider: {
+                async getChildren(id) {
+                    if (!id) {
+                        // Return all files. In the future this can be a hierarchical list, but for now
+                        // the upload method used will only return all files in a flat structure.
+                        return files.map((file) => {
+                            return {
+                                id: file.name,
+                                label: file.name,
+                                icon: 'fa-file'
+                            };
+                        });
+                    } else {
+                    }
+                }
+            }
+        });
+        tree.onNodeClick = (node) => {
+            let file = files.find((file) => {
+                return file.name === node.id;
+            });
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    let fileText = e.target.result;
+                    currentFileEditor.setValue(fileText);
+                };
+                reader.readAsText(file);
+            }
+        };
     });
 });
