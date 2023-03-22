@@ -3,9 +3,9 @@
 // - inferencePath
 // - inferenceValueResponseKey
 // - inferenceLanguageResponseKey
+// - currentFileTextParamName
 // - openaiAPIKeyParamName
 // - openaiOrganizationIDParamName
-
 import {VanillaTreeView} from "../tree_viewer/treeview.vanilla.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -29,6 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     currentFileEditor.setTheme('ace/theme/twilight');
 
+    function clearFields(resetCurrentFile) {
+        promptField.value = '';
+        post('/clear', null, null, (output) => {
+            console.log(output);
+            if (resetCurrentFile) {
+                currentFileEditor.setValue('');
+            }
+            outputEditor.setValue('');
+        });
+    }
+
     // Add go button action.
     let btn = document.getElementById('go-button');
     btn.addEventListener('click', () => {
@@ -44,10 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let params = new URLSearchParams();
         let dict = {};
         dict[inferenceParamName] = promptField.value;
-        params.append(inferenceParamName, JSON.stringify(dict));
+        dict[currentFileTextParamName] = currentFileEditor.getValue();
         params.append(openaiAPIKeyParamName, apiKey);
         params.append(openaiOrganizationIDParamName, organizationID);
-        postInference(inferencePath, params, inferenceValueResponseKey, (output) => {
+        post(inferencePath, params, JSON.stringify(dict), (output) => {
             let outputCode = output[inferenceValueResponseKey];
             let outputLanguage = output[inferenceLanguageResponseKey];
             console.log(output);
@@ -59,13 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add clear button action.
     let clrBtn = document.getElementById('clear-button');
     clrBtn.addEventListener('click', () => {
-        promptField.value = '';
+        clearFields(true);
     });
 
     // Add file upload responder
     let fileInput = document.getElementById('file-input');
     fileInput.addEventListener('change', (e) => {
         let files = [...e.target.files];
+        files = files.sort((a, b) => {
+            return a.name.localeCompare(b.name);
+        }).filter((file) => {
+            return !file.name.startsWith('.');
+        });
         let file = files[0];
         console.log(files);
         let reader = new FileReader();
@@ -86,7 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             return {
                                 id: file.name,
                                 label: file.name,
-                                icon: 'fa-file'
+                                icon: 'fa-file',
+                                expanded: false
                             };
                         });
                     } else {
@@ -98,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let file = files.find((file) => {
                 return file.name === node.id;
             });
+            clearFields(false);
             if (file) {
                 let reader = new FileReader();
                 reader.onload = (e) => {

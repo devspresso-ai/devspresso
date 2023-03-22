@@ -3,16 +3,16 @@
 }
 
 .treeview-node:nth-child(2n) {
-    background: rgba(32, 64, 128, 0.05);
+    background: rgba(66, 69, 97, 0.2);
 }
 
 .treeview-node:hover {
-    background: rgba(32, 64, 128, 0.1);
+    background: rgba(66, 69, 97, 0.3);
     transition: 0.1s ease-in;
 }
 
-.treeview-node.active {
-    background: rgba(32, 64, 128, 0.9);
+.treeview-node.treeview-node-expanded {
+    background: rgba(66, 69, 97, 1);
     color: white;
 }
 

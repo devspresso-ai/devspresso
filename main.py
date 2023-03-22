@@ -2,13 +2,16 @@ import json
 import inferences_service
 import os
 import session_manager
-from constants import INFERENCE_VALUE_RESPONSE_KEY, INFERENCE_LANGUAGE_RESPONSE_KEY, OPENAI_KEY_PARAM_NAME, OPENAI_ORGANIZATION_ID_PARAM_NAME
+from constants import INFERENCE_VALUE_RESPONSE_KEY, INFERENCE_LANGUAGE_RESPONSE_KEY, OPENAI_KEY_PARAM_NAME, \
+    OPENAI_ORGANIZATION_ID_PARAM_NAME, CURRENT_FILE_TEXT_PARAM_NAME
 from chat_helpers import CodeInferenceResult
 from dotenv import load_dotenv
 from inference_models import inference_model
 from flask import Flask, request, Response, render_template
+from flask_sslify import SSLify
 
 app = Flask(__name__)
+SSLify(app)
 load_dotenv()
 
 # Configure environment keys.
@@ -18,13 +21,14 @@ app.secret_key = os.getenv("FLASK_SESSION_KEY")
 def index():
     # When home page is loaded, clear previous context to establish a new conversation.
     session_manager.clear_all_model_contexts()
-    openai_key: str = session_manager.get_openai_key()
-    openai_organization_id: str = session_manager.get_openai_organization_id()
+    openai_key: str = session_manager.get_openai_key() or os.getenv("OPENAI_API_KEY")
+    openai_organization_id: str = session_manager.get_openai_organization_id() or os.getenv("OPENAI_ORGANIZATION_ID")
     return render_template(
         'index.html',
         inference_prompt_name=inference_model.InferenceModel.inference_prompt_name,
         inference_value_response_key=INFERENCE_VALUE_RESPONSE_KEY,
         inference_language_response_key=INFERENCE_LANGUAGE_RESPONSE_KEY,
+        current_file_text_param_name=CURRENT_FILE_TEXT_PARAM_NAME,
         openai_key_param_name=OPENAI_KEY_PARAM_NAME,
         openai_organization_id_param_name=OPENAI_ORGANIZATION_ID_PARAM_NAME,
         openai_key_prefill_value=openai_key,
@@ -37,12 +41,11 @@ def contact():
 
 @app.route("/infer", methods=['POST'])
 def infer():
-    inference_input: str = request.args[inference_model.InferenceModel.inference_prompt_name]
+    inference_input: str = request.json
     openai_api_key: str = request.args[OPENAI_KEY_PARAM_NAME]
     openai_organization_id: str = request.args[OPENAI_ORGANIZATION_ID_PARAM_NAME]
-
     inference: CodeInferenceResult = inferences_service.infer(
-        json.loads(inference_input),
+        inference_input,
         openai_api_key,
         openai_organization_id)
     response = Response(
@@ -53,3 +56,8 @@ def infer():
         content_type='application/json')
 
     return response
+
+@app.route("/clear", methods=['POST'])
+def clear():
+    session_manager.clear_all_model_contexts()
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

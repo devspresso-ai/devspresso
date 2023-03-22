@@ -579,7 +579,7 @@ p {
 .div-block.sidebar {
   overflow: scroll;
   position: absolute;
-  padding: 5px;
+  padding: 10px;
   left: 0%;
   top: 0%;
   right: auto;

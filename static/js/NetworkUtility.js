@@ -1,9 +1,12 @@
-// Posts an inference request to the provided inference path with the provided parameters. Returns the inference value.
-function postInference(inferencePath, params, inferenceValueResponseKey, completion) {
-    // Make a POST XMLHttpRequest to the `/infer` endpoint.
+// Posts a request to the provided path with the provided parameters. Returns the post value.
+function post(path, params, body, completion) {
+    // Make a POST XMLHttpRequest to the endpoint.
     let xhr = new XMLHttpRequest();
     // Add query parameters to the request.
-    xhr.open('POST', inferencePath + '?' + params.toString());
+    if (params != null) {
+        path = path + '?' + params.toString();
+    }
+    xhr.open('POST', path);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.onload = () => {
         // Get the response from the server, parsed as JSON.
@@ -17,5 +20,5 @@ function postInference(inferencePath, params, inferenceValueResponseKey, complet
     xhr.onerror = () => {
         alert('There was an error in the network request: ' + xhr.statusText);
     };
-    xhr.send();
+    xhr.send(body);
 }

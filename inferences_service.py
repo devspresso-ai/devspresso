@@ -10,9 +10,11 @@ from chat_helpers import CodeInferenceResult
 code_generator = inference_models.code_generator.CodeGenerator()
 all_models = code_generator
 
-def infer_code_generator(model_name: str, inference_input: str) -> CodeInferenceResult:
+def infer_code_generator(model_name: str, inference_dict: Dict[str, str]) -> CodeInferenceResult:
+    inference_input = inference_dict[InferenceModel.inference_prompt_name]
+    current_file_text = inference_dict[InferenceModel.current_file_text_name]
     previous_messages: [Dict[str, str]] = session_manager.get_model_context(model_name)
-    inference_prompt: ChatInferencePrompt = code_generator.inference_prompt(inference_input, previous_messages)
+    inference_prompt: ChatInferencePrompt = code_generator.inference_prompt(inference_input, current_file_text, previous_messages)
     inference_result: Dict[str, str] = _get_chat_inference(code_generator, inference_prompt.messages)
 
     # Construct new conversation history context
@@ -28,7 +30,7 @@ def infer_code_generator(model_name: str, inference_input: str) -> CodeInference
 def infer(inference_input: Dict[str, Any], openai_api_key: str, openai_organization_id: str) -> CodeInferenceResult:
     """inference_input is expected to be a dictionary with keys and values specific to the model."""
     _update_api_keys(openai_api_key, openai_organization_id)
-    return infer_code_generator(code_generator.name, inference_input[InferenceModel.inference_prompt_name])
+    return infer_code_generator(code_generator.name, inference_input)
 
 def get_prompt(model: str) -> str:
     match model:

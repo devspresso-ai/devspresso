@@ -17,14 +17,15 @@ def get_code_from_inference(inference: Dict[str, str]) -> CodeInferenceResult:
     """Returns the code from the inference result"""
     content = inference['content']
     code_block = _extract_code_block(content)
+    # If there is no code block extracted, return the inference as plain text
+    if code_block is None:
+        return CodeInferenceResult(content, 'text')
     # Get the string up until the first newline, which will contain the language of the code if any.
     lines = code_block.split("\n")
     language = lines[0].strip()
     # If there is a language, strip it from the start.
     if len(language) > 0:
         code_block = code_block[code_block.find(language) + len(language):]
-    if code_block is None:
-        return CodeInferenceResult(content, 'text')
 
     return CodeInferenceResult(code_block.strip(), language)
 

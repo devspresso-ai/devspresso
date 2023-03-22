@@ -145,6 +145,7 @@ class VanillaTreeView extends TreeView {
                 el.classList.add(CollapsedNodeClass);
                 break;
             case CollapsibleState.Expanded:
+                console.log("EXPANDED");
                 el.classList.add(ExpandedNodeClass);
                 break;
             case CollapsibleState.None:
