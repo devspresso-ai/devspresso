@@ -63,7 +63,6 @@ p {
 
 .button {
   display: inline-block;
-  padding: 15px 33px;
   border-style: solid;
   border-width: 1px 1px 2px;
   border-color: #47474f;
@@ -114,9 +113,7 @@ p {
 }
 
 .navbar {
-  height: 100px;
-  padding-top: 18px;
-  padding-bottom: 18px;
+  height: 60px;
   background-color: #424561;
 }
 
@@ -223,7 +220,8 @@ p {
 }
 
 #code-div {
-  padding-top: 0px;
+  margin-left: 205px;
+  padding-top: 5px;
   padding-bottom: 0px;
   background-color: transparent;
 }
@@ -410,7 +408,7 @@ p {
 }
 
 .field.large {
-  height: 127px;
+  height: 80px;
   border-style: solid;
   border-width: 1px;
   border-color: rgba(0, 0, 0, 0.3);
@@ -479,8 +477,11 @@ p {
 }
 
 .section-2 {
-  padding-left: 0px;
   text-align: center;
+  margin: auto;
+  min-width: 700px;
+  max-width: 850px;
+  padding-top: 5px;
 }
 
 .form-2 {
@@ -493,6 +494,7 @@ p {
 }
 
 .form-block {
+  border-radius: 5px;
   padding-top: 12px;
   padding-bottom: 12px;
   background-color: #424561;
@@ -575,19 +577,23 @@ p {
 }
 
 .div-block.sidebar {
+  overflow: scroll;
   position: absolute;
+  padding: 5px;
   left: 0%;
   top: 0%;
   right: auto;
   bottom: 0%;
   width: auto;
-  height: 90%;
+  height: 59%;
   width: 200px;
-  margin-top: 100px;
+  margin-top: 65px;
+  margin-left: 5px;
   float: left;
   clear: none;
-  border-right: 1px solid #0caf9e;
-  background-color: transparent;
+  border: 1px solid #0caf9e;
+  background-color: rgba(36, 36, 36, 0.6);
+  border-radius: 5px;
   color: white;
 }
 
@@ -654,7 +660,7 @@ p {
 }
 
 .code-editor {
-  min-height: 250px;
+  min-height: 450px;
 }
 
 @media screen and (max-width: 991px) {
