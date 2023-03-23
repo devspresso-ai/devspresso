@@ -61,6 +61,21 @@ p {
   line-height: 22px;
 }
 
+#file-input {
+  display: none;
+}
+
+#file-input-label {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: 5px;
+  padding: 5px;
+  font-size: 12px;
+  font-style: normal;
+  width: 100%;
+}
+
 .button {
   display: inline-block;
   border-style: solid;
@@ -220,7 +235,7 @@ p {
 }
 
 #code-div {
-  margin-left: 205px;
+  margin-left: 5px;
   padding-top: 5px;
   padding-bottom: 0px;
   background-color: transparent;
@@ -585,7 +600,7 @@ p {
   right: auto;
   bottom: 0%;
   width: auto;
-  height: 59%;
+  height: 90%;
   width: 200px;
   margin-top: 65px;
   margin-left: 5px;
@@ -612,7 +627,10 @@ p {
   object-fit: fill;
 }
 
-#contact {
+.text-section {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  border-radius: 5px;
   background-color: #424561;
   padding-top: 25px;
   padding-bottom: 25px;

@@ -43,6 +43,11 @@ class TreeView {
         this.root.removeEventListener('click', this._onRootClick);
         this.container.removeChild(this.root);
     }
+    removeAllRootChildren() {
+        while (this.root.firstChild) {
+            this.root.removeChild(this.root.firstChild);
+        }
+    }
     _onRootClick(ev) {
         let el = ev.target;
         while (!this._hasMetadata(el) && el.parentElement) {
