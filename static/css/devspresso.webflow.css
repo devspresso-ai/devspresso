@@ -14,7 +14,7 @@ h1 {
 }
 
 h2 {
-  margin: 10px 0px;
+  margin: 5px 0px;
   font-family: Montserrat, sans-serif;
   font-size: 23px;
   line-height: 36px;
@@ -144,6 +144,14 @@ p {
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
+}
+
+.w-select {
+  padding:2px;
+  border-radius: 5px;
+  width: 200px;
+  float: right;
+  margin: 5px;
 }
 
 .nav-link:hover {
@@ -663,6 +671,11 @@ p {
   display: -ms-flexbox;
   display: flex;
   height: 40px;
+}
+
+.w-container {
+  margin-right: 50px;
+  margin-left: 50px;
 }
 
 .link-2 {

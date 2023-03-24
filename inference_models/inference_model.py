@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 from constants import CURRENT_FILE_TEXT_PARAM_NAME
 
 class InferencePrompt:
@@ -16,9 +16,13 @@ class InferencePromptWithHistoricalContext(InferencePrompt):
 class ChatInferencePrompt(InferencePrompt):
     """Defines an inference prompt that represents a chat inference. The chat inference context is fully contained in messages, including the existing prompt."""
 
-    def __init__(self, messages: [Dict[str, str]]):
+    def __init__(self, seed_message: Optional[Dict[str, str]], messages: [Dict[str, str]]):
         super().__init__('')
-        self.messages = messages
+        self._seed_message = seed_message
+        self._messages = messages
+
+    def get_messages(self):
+        return [self._seed_message] + self._messages if self._seed_message is not None else self._messages
 
 class InferenceModel:
 

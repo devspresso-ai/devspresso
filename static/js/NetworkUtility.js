@@ -11,14 +11,14 @@ function post(path, params, body, completion) {
     xhr.onload = () => {
         // Get the response from the server, parsed as JSON.
         if (xhr.status > 299) {
-            alert('There was an error in the network request: ' + xhr.statusText);
+            alert('There was an error in the network request: ' + xhr.responseText);
             return;
         }
         let response = JSON.parse(xhr.responseText);
         completion(response);
     };
     xhr.onerror = () => {
-        alert('There was an error in the network request: ' + xhr.statusText);
+        alert('There was an error in the network request: ' + xhr.responseText);
     };
     xhr.send(body);
 }

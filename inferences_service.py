@@ -15,11 +15,11 @@ def infer_code_generator(model_name: str, inference_dict: Dict[str, str]) -> Cod
     current_file_text = inference_dict[InferenceModel.current_file_text_name]
     previous_messages: [Dict[str, str]] = session_manager.get_model_context(model_name)
     inference_prompt: ChatInferencePrompt = code_generator.inference_prompt(inference_input, current_file_text, previous_messages)
-    inference_result: Dict[str, str] = _get_chat_inference(code_generator, inference_prompt.messages)
+    inference_result: Dict[str, str] = _get_chat_inference(code_generator, inference_prompt.get_messages())
 
     # Construct new conversation history context
     # This conversation history context is a list of messages for chat inference.
-    new_context: [Dict[str, str]] = inference_prompt.messages
+    new_context: [Dict[str, str]] = inference_prompt.get_messages()
     new_context.append(inference_result)
     session_manager.set_model_context(model_name, new_context)
 
