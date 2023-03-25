@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %} Devspresso | Login {% endblock %}
+{% block content %}
+<h1>Login with Google</h1>
+<form action="/oauth/google" method="POST">
+    <div>
+        <label for="email">Email address:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit">Login with Google</button>
+</form>
+{% endblock %}

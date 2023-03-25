@@ -1,6 +1,6 @@
 from flask import session
 from typing import Any, Dict, Optional
-from constants import OPENAI_KEY_PARAM_NAME, OPENAI_ORGANIZATION_ID_PARAM_NAME
+from constants import OPENAI_KEY_PARAM_NAME, OPENAI_ORGANIZATION_ID_PARAM_NAME, GOOGLE_OAUTH_KEY
 
 MODEL_CONTEXT_KEY: str = "model-context"
 
@@ -47,3 +47,9 @@ def get_openai_organization_id() -> Optional[str]:
 
 def set_openai_organization_id(value: str) -> None:
     session[OPENAI_ORGANIZATION_ID_PARAM_NAME] = value
+
+def get_auth_key() -> Optional[str]:
+    return session.get(GOOGLE_OAUTH_KEY)
+
+def set_auth_key(value: str) -> None:
+    session[GOOGLE_OAUTH_KEY] = value

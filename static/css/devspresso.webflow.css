@@ -147,6 +147,8 @@ p {
 }
 
 .w-select {
+  background-color: #272727;
+  color: white;
   padding:2px;
   border-radius: 5px;
   width: 200px;

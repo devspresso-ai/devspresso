@@ -131,9 +131,15 @@ document.addEventListener('DOMContentLoaded', () => {
         editor.session.setMode('ace/mode/' + selectedLanguage);
         languageSelector.value = selectedLanguage;
     }
-
     setEditorLanguage(currentFileEditor, currentFileLanguageSelector, 'text');
     setEditorLanguage(outputEditor, outputLanguageSelector, 'text');
+
+    currentFileLanguageSelector.addEventListener('change', (e) => {
+        setEditorLanguage(currentFileEditor, currentFileLanguageSelector, e.target.value);
+    });
+    outputLanguageSelector.addEventListener('change', (e) => {
+        setEditorLanguage(outputEditor, outputLanguageSelector, e.target.value);
+    });
 
     // Add go button action.
     let btn = document.getElementById('go-button');
@@ -155,12 +161,12 @@ document.addEventListener('DOMContentLoaded', () => {
         params.append(openaiAPIKeyParamName, apiKey);
         params.append(openaiOrganizationIDParamName, organizationID);
         post(inferencePath, params, JSON.stringify(dict), (output) => {
+            clearInterval(loadingInterval);
             let outputCode = output[inferenceValueResponseKey];
             let outputLanguage = output[inferenceLanguageResponseKey];
             console.log(output);
             outputEditor.setValue(outputCode);
-            setEditorLanguage(outputEditor, outputLanguage);
-            clearInterval(loadingInterval);
+            setEditorLanguage(outputEditor, outputLanguageSelector, outputLanguage);
         });
     });
 
