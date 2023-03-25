@@ -19,9 +19,6 @@ app.secret_key = os.getenv("FLASK_SESSION_KEY")
 
 @app.route("/")
 def index():
-    if not session_manager.get_auth_token():
-        return render_template('login.html')
-
     # When home page is loaded, clear previous context to establish a new conversation.
     session_manager.clear_all_model_contexts()
     openai_key: str = session_manager.get_openai_key() or os.getenv("OPENAI_API_KEY")
