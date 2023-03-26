@@ -4,10 +4,10 @@ import os
 import session_manager
 from constants import INFERENCE_VALUE_RESPONSE_KEY, INFERENCE_LANGUAGE_RESPONSE_KEY, OPENAI_KEY_PARAM_NAME, \
     OPENAI_ORGANIZATION_ID_PARAM_NAME, CURRENT_FILE_TEXT_PARAM_NAME
-from chat_helpers import CodeInferenceResult
+from inference_models.chat_helpers import CodeInferenceResult
 from dotenv import load_dotenv
 from inference_models import inference_model
-from flask import Flask, request, Response, render_template
+from flask import Flask, request, Response, render_template, redirect, url_for
 from flask_sslify import SSLify
 
 app = Flask(__name__)
@@ -19,6 +19,9 @@ app.secret_key = os.getenv("FLASK_SESSION_KEY")
 
 @app.route("/")
 def index():
+    if session_manager.get_auth_key() is None:
+        return redirect(url_for('login'))
+
     # When home page is loaded, clear previous context to establish a new conversation.
     session_manager.clear_all_model_contexts()
     openai_key: str = session_manager.get_openai_key() or os.getenv("OPENAI_API_KEY")
@@ -36,13 +39,15 @@ def index():
 
 @app.route("/contact")
 def contact():
-    return render_template(
-        'contact.html')
+    return render_template('contact.html')
 
 @app.route("/about")
 def about():
-    return render_template(
-        'about.html')
+    return render_template('about.html')
+
+@app.route ("/login")
+def login():
+    return render_template('login.html')
 
 @app.route("/infer", methods=['POST'])
 def infer():

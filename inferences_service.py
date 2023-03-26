@@ -3,9 +3,9 @@ from typing import Dict, Any
 import openai
 import session_manager
 import inference_models
-import chat_helpers
+from inference_models import chat_helpers
 from inference_models.inference_model import ChatInferencePrompt, InferenceModel
-from chat_helpers import CodeInferenceResult
+from inference_models.chat_helpers import CodeInferenceResult
 
 code_generator = inference_models.code_generator.CodeGenerator()
 all_models = code_generator

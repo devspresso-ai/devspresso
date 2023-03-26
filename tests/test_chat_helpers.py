@@ -1,4 +1,4 @@
-from chat_helpers import _extract_code_block
+from inference_models.chat_helpers import _extract_code_block
 
 def test_extract_code_block():
     # Test case 1: Code block exists
