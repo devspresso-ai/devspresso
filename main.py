@@ -47,7 +47,12 @@ def about():
 
 @app.route ("/login")
 def login():
-    return render_template('login.html')
+    return render_template('login.html', google_client_id=os.getenv("GOOGLE_CLIENT_ID"))
+
+@app.route ("/authenticate_completion", methods=['POST'])
+def authenticate_completion():
+    print(request.form['credential'])
+    return redirect(url_for('index'))
 
 @app.route("/infer", methods=['POST'])
 def infer():
@@ -71,3 +76,7 @@ def infer():
 def clear():
     session_manager.clear_all_model_contexts()
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+@app.route("/privacy_policy")
+def privacy_policy():
+    return render_template('privacy_policy.html')

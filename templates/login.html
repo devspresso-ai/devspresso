@@ -2,16 +2,32 @@
 
 {% block title %} Devspresso | Login {% endblock %}
 {% block content %}
-<h1>Login with Google</h1>
-<form action="/oauth/google" method="POST">
-    <div>
-        <label for="email">Email address:</label>
-        <input type="email" id="email" name="email" required>
+<!-- Set referrer for localhost redirect -->
+<meta name="referrer" content="no-referrer-when-downgrade">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<div id="login" class="section-2 text-section">
+    <h1 class="heading" style="text-align: center">Devspresso</h1>
+    <div class="text-block">
+        Devspresso is an open-source project that allows you to write and modify code in your browser while supported by a large language model.
+        The intent of the project is to remove manual code editing as much as possible, and instead to let the model do the work.
+        Contributions are welcomed at the <a href="https://github.com/modelcamp/devspresso">GitHub repository</a>.
+        </br></br>
+        You will need an OpenAI API key to use this service. Alternate integrations with different service providers (and possibly self-hosted open source solutions) are in the works.
+        See a demo of the project in action.
     </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+    </br>
+    <div id="g_id_onload"
+         data-client_id="{{ google_client_id }}"
+         data-login_uri="{{ url_for('authenticate_completion', _external=True) }}"
+         data-auto_prompt="false">
     </div>
-    <button type="submit">Login with Google</button>
-</form>
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
+</div>
 {% endblock %}

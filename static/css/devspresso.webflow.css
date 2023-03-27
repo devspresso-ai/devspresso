@@ -527,6 +527,11 @@ p {
   height: 100%;
 }
 
+.g_id_signin {
+  width: 200px;
+  margin: auto;
+}
+
 .heading {
   color: #0caf9e;
   text-align: left;

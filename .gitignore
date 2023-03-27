@@ -83,4 +83,5 @@ Secrets.swift
 .venv
 .env
 .idea
+app.yaml
 __pycache__
