@@ -46,7 +46,6 @@
         </form>
       </div>
     </div>
-    {% include "footer.html" %}
   </div>
   <div id="sidebar" class="div-block sidebar">
     <label id="file-input-label" for="file-input" class="button form w-button">Choose a project folder</label>
@@ -55,6 +54,7 @@
     <label id="file-count-label">0 Files</label>
     <div id="tree"></div>
   </div>
+  {% include "footer.html" %}
 </div>
 <link rel="stylesheet" href="{{ url_for('static', filename='tree_viewer/treeview.vanilla.css') }}" />
 <script src="{{ url_for('static', filename='tree_viewer/treeview.vanilla.js') }}" type="module" charset="utf-8"></script>
