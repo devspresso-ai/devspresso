@@ -1,1 +1,7 @@
-<p class="footer-text">Devspresso is distributed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="link-4" target="_blank">GNU GPL license</a>. All software based on Devspresso source code must be licensed as open source. See the source code on <a href="https://github.com/modelcamp/devspresso" class="link-3" target="_blank">GitHub</a>. See our <a class="link-3" href="{{ url_for('privacy_policy') }}">Privacy Policy</a></p>
+<p class="footer-text">
+    Devspresso is distributed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="link-4" target="_blank">GNU GPL license</a>. All software based on Devspresso source code must be licensed as open source. See the source code on <a href="https://github.com/modelcamp/devspresso" class="link-3" target="_blank">GitHub</a>. See our <a class="link-3" href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
+    </br>
+    <!-- This is a hacky method to make the logout link POST -->
+    <form id="logout-form" method="post" action="{{ url_for('logout') }}"></form>
+    <a onclick="document.getElementById('logout-form').submit();" style="padding-left:12px;" class="link-4" href="#">Log out</a>
+</p>

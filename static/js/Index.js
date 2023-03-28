@@ -60,13 +60,14 @@ function populateDropdown(selectElement, options) {
 }
 
 // Reads the given file into the fileEditor
-function readFileIntoFileEditor(file, fileEditor) {
+function readFileIntoFileEditor(file, fileEditor, fileNameField) {
     let reader = new FileReader();
     reader.onload = (e) => {
         let fileText = e.target.result;
         fileEditor.setValue(fileText);
     };
     reader.readAsText(file);
+    fileNameField.innerHTML = file.name;
 }
 
 // Given a list of files, filter them to exclude hidden files and files in hidden folders.
@@ -101,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let openaiOrganizationIDField = document.getElementById('openai-organization-id-field');
     let fileSearchField = document.getElementById('file-search-field');
     let fileCountLabel = document.getElementById('file-count-label');
+    let currentFileNameField = document.getElementById('current-file-title');
 
     // Set up codemirror elements.
     let outputEditor = ace.edit(outputField, {
@@ -167,6 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(output);
             outputEditor.setValue(outputCode);
             setEditorLanguage(outputEditor, outputLanguageSelector, outputLanguage);
+        }, (error) => {
+            clearInterval(loadingInterval);
+            outputEditor.setValue('');
+            alert('Error: ' + error);
         });
     });
 
@@ -193,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let files = [...e.target.files];
         updateCurrentFiles(files);
         let file = currentFiles[0];
-        readFileIntoFileEditor(file, currentFileEditor);
+        readFileIntoFileEditor(file, currentFileEditor, currentFileNameField);
 
         // Setup tree view
         tree = new VanillaTreeView(document.getElementById('tree'), {
@@ -221,9 +227,9 @@ document.addEventListener('DOMContentLoaded', () => {
             let file = files.find((file) => {
                 return file.name === node.id;
             });
-            clearFields(promptField, outputEditor, currentFileEditor, true);
+            clearFields(promptField, outputEditor, currentFileEditor, false);
             if (file) {
-                readFileIntoFileEditor(file, currentFileEditor);
+                readFileIntoFileEditor(file, currentFileEditor, currentFileNameField);
             }
         };
     });

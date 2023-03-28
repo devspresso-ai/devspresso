@@ -20,6 +20,8 @@ def infer_code_generator(model_name: str, inference_dict: Dict[str, str]) -> Cod
     # Construct new conversation history context
     # This conversation history context is a list of messages for chat inference.
     new_context: [Dict[str, str]] = inference_prompt.get_messages()
+    # Trim the context to the last 1000 tokens.
+    new_context = chat_helpers.trim_context(new_context)
     new_context.append(inference_result)
     session_manager.set_model_context(model_name, new_context)
 

@@ -29,11 +29,45 @@ def get_code_from_inference(inference: Dict[str, str]) -> CodeInferenceResult:
 
     return CodeInferenceResult(code_block.strip(), language)
 
+def trim_context(context: [Dict[str, str]]) -> [Dict[str, str]]:
+    """Trims the context to the last 1000 tokens. This is used to optimize inference speed."""
+    if context is None:
+        return None
+    total_tokens = 0
+    # Accounts for multiple possible system messages, but as of now only 1 is possible.
+    system_messages = []
+    conversation_messages = []
+    # Iterate backwards so that the conversation_messages begin with the latest message.
+    for message in context[::-1]:
+        if message['role'] == 'system':
+            system_messages.append(message)
+        else:
+            conversation_messages.append(message)
+
+    for message in system_messages:
+        total_tokens += len(message['content'].split(" "))
+
+    # If somehow the system messages are more than 1000 tokens, just nuke the context.
+    if total_tokens > 1000:
+        return []
+
+    for i in range(len(conversation_messages)):
+        message = conversation_messages[i]
+        total_tokens += len(message['content'].split(" "))
+        if total_tokens > 1000:
+            # Trim conversation_messages to the latest i messages.
+            conversation_messages = conversation_messages[:i]
+            # Return all conversation messages, keeping in mind that the list is reversed.
+            new_context = conversation_messages + system_messages
+            return new_context[::-1]
+
+    return context
+
 def _extract_code_block(text: str) -> Optional[str]:
     start_index = text.find("```")
     if start_index == -1:
         return None
-    end_index = text.find("```", start_index + 3)
+    end_index = text.rfind("```", start_index + 3)
     if end_index == -1:
         return None
     return text[start_index + 3:end_index]
