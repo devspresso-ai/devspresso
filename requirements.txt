@@ -1,4 +1,5 @@
-openai
-flask
+google-auth
+openai~=0.27.2
+flask~=2.2.3
 flask-sslify
-python-dotenv
+python-dotenv~=1.0.0

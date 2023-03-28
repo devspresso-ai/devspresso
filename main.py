@@ -1,4 +1,6 @@
 import json
+
+import authentication_service
 import inferences_service
 import os
 import session_manager
@@ -51,7 +53,10 @@ def login():
 
 @app.route ("/authenticate_completion", methods=['POST'])
 def authenticate_completion():
-    print(request.form['credential'])
+    credential = request.form['credential']
+    if authentication_service.verify_token(credential):
+        session_manager.set_auth_key(credential)
+
     return redirect(url_for('index'))
 
 @app.route("/infer", methods=['POST'])

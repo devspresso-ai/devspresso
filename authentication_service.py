@@ -1,11 +1,12 @@
+import os
 from google.oauth2 import id_token
 from google.auth.transport import requests
 
 def verify_token(token):
-    CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+    client_id = os.getenv("GOOGLE_CLIENT_ID")
     try:
         # Specify the CLIENT_ID of the app that accesses the backend:
-        idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+        idinfo = id_token.verify_oauth2_token(token, requests.Request(), client_id)
 
         # Or, if multiple clients access the backend server:
         # idinfo = id_token.verify_oauth2_token(token, requests.Request())
@@ -18,6 +19,8 @@ def verify_token(token):
 
         # ID token is valid. Get the user's Google Account ID from the decoded token.
         userid = idinfo['sub']
+        print("Successful login for token " + token + " and userid " + userid)
+        return True
     except ValueError:
         # Invalid token
-        pass
+        return False
