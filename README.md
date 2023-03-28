@@ -1,5 +1,6 @@
 # Devspresso
 Devspresso is an open-source coding tool designed to let developers delegate coding to an LLM via text prompting, similar to how one would do code reviews or pair programming.
+See the [video demo walkthrough](https://www.loom.com/share/9a167b3cdb684b39885731c44322134f)
 
 ## Uses
 The tool is particularly good at well-defined, repetitive coding tasks. Examples include:
