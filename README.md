@@ -18,3 +18,5 @@ Several core improvements on the roadmap:
 - Ability to save current file and/or generated output to disk
 - Ability to select underlying code gen model
 - Shortcut list for common coding tasks
+
+Devspresso is distributed under the GNU GPL license. All software based on Devspresso source code must be licensed as open source.
