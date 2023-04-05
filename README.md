@@ -2,6 +2,8 @@
 Devspresso is an open-source coding tool designed to let developers delegate coding to an LLM via text prompting, similar to how one would do code reviews or pair programming.
 See the [video demo walkthrough](https://www.loom.com/share/9a167b3cdb684b39885731c44322134f)
 
+Use the live version at [https://devspresso.app](https://devspresso.app)
+
 ![Devspresso Screen Shot](./docs/images/screenshot.png)
 
 ## Uses
@@ -14,6 +16,9 @@ The tool is particularly good at well-defined, repetitive coding tasks. Examples
 
 In addition, the code is well-versed at implementing algorithms, and can effectively implement the types of math-heavy or corner-case-heavy functions that humans tend to be less effective at.
 
+## Known Issues
+- When working within a directory, files may need to be reuploaded periodically if they are changed. Currently the only solution is to go through the upload flow again, or to reload the page. 
+
 ## Contributing
 Follow pull request guidelines in [CONTRIBUTING.md](./CONTRIBUTING.md).
 ### Issues
@@ -21,6 +26,9 @@ To report an issue, send an email to info@devspresso.app, or join our [public Sl
 
 ### Roadmap
 Several core improvements on the roadmap:
+- Ability to select multiple files as input context to a prompt. This unlocks potential to ask questions while providing the model with substantial context about your work environment.
+- Location to specify a consistent set of information about your application - e.g. "I am working in Kotlin Spring with an OpenAPI-generated set of APIs and models located at {some_location}"
+- Location to ask general questions to the model about your code and/or concepts. 
 - Code diff view for the current file vs. generated output
 - Ability to save current file and/or generated output to disk
 - Ability to select underlying code gen model

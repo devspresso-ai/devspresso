@@ -46,7 +46,8 @@ const languageOptions = [
     { mode_name: "sql", display_name: "SQL" },
     { mode_name: "swift", display_name: "Swift" },
     { mode_name: "text", display_name: "Text" },
-    { mode_name: "typescript", display_name: "TypeScript" }
+    { mode_name: "typescript", display_name: "TypeScript" },
+    { mode_name: "yaml", display_name: "YAML" }
 ];
 
 // Populates a dropdown menu with the given language options.
@@ -60,13 +61,38 @@ function populateDropdown(selectElement, options) {
 }
 
 // Reads the given file into the fileEditor
+function readFileUsingFetch(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    fetch(url)
+      .then((response) => {
+        if (response.ok) {
+          return response.text();
+        } else {
+          reject(new Error('Error reading the file'));
+        }
+      })
+      .then((fileText) => {
+        resolve(fileText);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        URL.revokeObjectURL(url);
+      });
+  });
+}
 function readFileIntoFileEditor(file, fileEditor, fileNameField) {
-    let reader = new FileReader();
-    reader.onload = (e) => {
-        let fileText = e.target.result;
+    readFileUsingFetch(file).then((fileText) => {
+        // Use the fileText here
         fileEditor.setValue(fileText);
-    };
-    reader.readAsText(file);
+        console.log(`DEBUG: ${fileText} ${fileEditor}`);
+    }).catch((error) => {
+        console.error('Error:', error);
+        alert("Error loading file: the underlying file may have been changed on your machine. Please try reuploading your directory or refreshing.")
+
+    });
     fileNameField.innerHTML = file.name;
 }
 
@@ -84,7 +110,9 @@ function filterFiles(files) {
 
 // Clears the given prompt field and output field, and optionally clears the current file editor.
 function clearFields(promptField, outputEditor, currentFileEditor, resetCurrentFile) {
-    promptField.value = '';
+    if (promptField != null) {
+        promptField.value = '';
+    }
     post('/clear', null, null, (output) => {
         console.log(output);
         if (resetCurrentFile) {
@@ -125,7 +153,11 @@ document.addEventListener('DOMContentLoaded', () => {
     populateDropdown(outputLanguageSelector, languageOptions);
 
     // Sets the language of the given editor to the given language, defaulting to 'text' if not found.
+    // Or, if there is no language, do nothing.
     function setEditorLanguage(editor, languageSelector, selectedLanguage) {
+        if (selectedLanguage === null || selectedLanguage.length === 0) {
+            return;
+        }
         if (languageOptions.map(option => option.mode_name).indexOf(selectedLanguage) === -1) {
             console.log("Language type not found: " + selectedLanguage + ". Defaulting to 'text'.");
             selectedLanguage = 'text';
@@ -192,53 +224,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let tree;
+    tree = new VanillaTreeView(document.getElementById('tree'), {
+        provider: {
+            async getChildren(id) {
+                if (!id) {
+                    // Return all files. In the future this can be a hierarchical list, but for now
+                    // the upload method used will only return all files in a flat structure.
+                    let newFiles = currentFiles.map((file) => {
+                        return {
+                            id: file.name,
+                            label: file.name,
+                            icon: 'fa-file',
+                            expanded: false
+                        };
+                    });
+                    console.log("Loading new files into DOM: " + newFiles);
+                    return newFiles;
+                } else {
+                }
+            }
+        }
+    });
+    tree.onNodeClick = (node) => {
+        let file = currentFiles.find((file) => {
+            return file.name === node.id;
+        });
+        clearFields(null, outputEditor, currentFileEditor, false);
+        if (file) {
+            console.log("Loading new file into editor: " + file.name);
+            readFileIntoFileEditor(file, currentFileEditor, currentFileNameField);
+        } else {
+            console.log("Error! Current file not found for file name: " + node.id + ".");
+        }
+    };
 
     // Add file upload responder
     let fileInput = document.getElementById('file-input');
     fileInput.addEventListener('change', (e) => {
-        let files = [...e.target.files];
-        updateCurrentFiles(files);
+        updateCurrentFiles([...e.target.files]);
         let file = currentFiles[0];
         readFileIntoFileEditor(file, currentFileEditor, currentFileNameField);
 
-        // Setup tree view
-        tree = new VanillaTreeView(document.getElementById('tree'), {
-            provider: {
-                async getChildren(id) {
-                    if (!id) {
-                        // Return all files. In the future this can be a hierarchical list, but for now
-                        // the upload method used will only return all files in a flat structure.
-                        let newFiles = currentFiles.map((file) => {
-                            return {
-                                id: file.name,
-                                label: file.name,
-                                icon: 'fa-file',
-                                expanded: false
-                            };
-                        });
-                        console.log("Loading new files into DOM: " + newFiles);
-                        return newFiles;
-                    } else {
-                    }
-                }
-            }
-        });
-        tree.onNodeClick = (node) => {
-            let file = files.find((file) => {
-                return file.name === node.id;
-            });
-            clearFields(promptField, outputEditor, currentFileEditor, false);
-            if (file) {
-                readFileIntoFileEditor(file, currentFileEditor, currentFileNameField);
-            }
-        };
+        tree.detach();
+        tree.removeAllRootChildren();
+        tree.attach();
     });
 
     // Setup file search
     fileSearchField.addEventListener('input', (e) => {
-        let search = e.target.value;
+        let search = e.target.value.toLowerCase();;
         let files = [...fileInput.files].filter((file) => {
-            return file.name.includes(search);
+            return file.name.toLowerCase().includes(search);
         });
         console.log(files);
         updateCurrentFiles(files);
@@ -246,4 +282,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tree.removeAllRootChildren();
         tree.attach();
     });
+
+    // TODO: Set up resize listeners for sidebar. https://stackoverflow.com/questions/6492683/how-to-detect-divs-dimension-changed
 });

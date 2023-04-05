@@ -603,7 +603,7 @@ p {
 }
 
 .div-block.sidebar {
-  overflow: scroll;
+  overflow-y: scroll;
   position: absolute;
   padding: 10px;
   left: 0%;
@@ -621,6 +621,7 @@ p {
   background-color: rgba(36, 36, 36, 0.6);
   border-radius: 5px;
   color: white;
+  resize: both;
 }
 
 .div-block-2 {
