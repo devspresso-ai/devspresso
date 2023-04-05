@@ -35,4 +35,4 @@ Several core improvements on the roadmap:
 - Shortcut list for common coding tasks
 - Ability to chunk input for larger input sizes
 
-Devspresso is distributed under the GNU GPL license. All software based on Devspresso source code must be licensed as open source.
+Devspresso is distributed under the new BSD license.
