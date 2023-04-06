@@ -1,6 +1,5 @@
 import json
 
-import authentication_service
 import inferences_service
 import os
 import session_manager
@@ -21,8 +20,12 @@ app.secret_key = os.getenv("FLASK_SESSION_KEY")
 
 @app.route("/")
 def index():
-    if session_manager.get_auth_key() is None:
-        print("No auth key found, redirecting to login page.")
+    return render_template('index.html', is_authenticated=session_manager.is_authenticated())
+
+@app.route("/develop")
+def develop():
+    if not session_manager.is_authenticated():
+        print("No valid auth key found, redirecting to login page.")
         return redirect(url_for('login'))
 
     # When home page is loaded, clear previous context to establish a new conversation.
@@ -30,7 +33,8 @@ def index():
     openai_key: str = session_manager.get_openai_key() or os.getenv("OPENAI_API_KEY")
     openai_organization_id: str = session_manager.get_openai_organization_id() or os.getenv("OPENAI_ORGANIZATION_ID")
     return render_template(
-        'index.html',
+        'develop.html',
+        is_authenticated=session_manager.is_authenticated(),
         inference_prompt_name=inference_model.InferenceModel.inference_prompt_name,
         inference_value_response_key=INFERENCE_VALUE_RESPONSE_KEY,
         inference_language_response_key=INFERENCE_LANGUAGE_RESPONSE_KEY,
@@ -42,31 +46,31 @@ def index():
 
 @app.route("/contact")
 def contact():
-    return render_template('contact.html')
+    return render_template('contact.html', is_authenticated=session_manager.is_authenticated())
 
 @app.route("/about")
 def about():
-    return render_template('about.html')
+    return render_template('about.html', is_authenticated=session_manager.is_authenticated())
 
-@app.route ("/login")
+@app.route("/login")
 def login():
-    if session_manager.get_auth_key() is not None:
-        print("Auth key found, redirecting to home page.")
-        return redirect(url_for('index'))
-    return render_template('login.html', google_client_id=os.getenv("GOOGLE_CLIENT_ID"))
+    if session_manager.is_authenticated():
+        print("Valid auth key found, redirecting to development page.")
+        return redirect(url_for('develop'))
+    return render_template('login.html', is_authenticated=session_manager.is_authenticated(), google_client_id=os.getenv("GOOGLE_CLIENT_ID"))
 
 @app.route ("/authenticate_completion", methods=['POST'])
 def authenticate_completion():
     credential = request.form['credential']
-    if authentication_service.verify_token(credential):
-        session_manager.set_auth_key(credential)
+    if not session_manager.set_auth_key(credential):
+        return redirect(url_for('login', is_authenticated=False, login_error="Invalid credential. Please try again."))
 
-    return redirect(url_for('index'))
+    return redirect(url_for('develop', is_authenticated=True))
 
 @app.route ("/logout", methods=['POST'])
 def logout():
     session_manager.clear_auth_key()
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
 
 @app.route("/infer", methods=['POST'])
 def infer():
@@ -93,4 +97,4 @@ def clear():
 
 @app.route("/privacy_policy")
 def privacy_policy():
-    return render_template('privacy_policy.html')
+    return render_template('privacy_policy.html', is_authenticated=session_manager.is_authenticated())

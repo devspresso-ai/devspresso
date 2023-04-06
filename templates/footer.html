@@ -2,6 +2,7 @@
     Devspresso is distributed under the <a href="https://opensource.org/license/bsd-3-clause/" class="link-4" target="_blank">New BSD License</a>. See the source code on <a href="https://github.com/modelcamp/devspresso" class="link-3" target="_blank">GitHub</a>. See our <a class="link-3" href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
     </br>
     <!-- This is a hacky method to make the logout link POST -->
-    <form id="logout-form" method="post" action="{{ url_for('logout') }}"></form>
-    <a onclick="document.getElementById('logout-form').submit();" style="padding-left:12px;" class="link-4" href="#">Log out</a>
+    <form id="logout_form" method="post" action="{{ url_for('logout') }}"></form>
+    <a id="footer_logout_link" onclick="document.getElementById('logout_form').submit();" style="padding-left:12px;" class="link-4" href="#">Log out</a>
+    <a id="footer_login_link" href="{{ url_for('login') }}" class="link-4" style="padding-left:12px;">Log in</a>
 </p>

@@ -1,3 +1,4 @@
+import authentication_service
 from flask import session
 from typing import Any, Dict, Optional
 from constants import OPENAI_KEY_PARAM_NAME, OPENAI_ORGANIZATION_ID_PARAM_NAME, GOOGLE_OAUTH_KEY
@@ -48,11 +49,19 @@ def get_openai_organization_id() -> Optional[str]:
 def set_openai_organization_id(value: str) -> None:
     session[OPENAI_ORGANIZATION_ID_PARAM_NAME] = value
 
-def get_auth_key() -> Optional[str]:
-    return session.get(GOOGLE_OAUTH_KEY)
+def is_authenticated() -> bool:
+    return get_auth_key() is not None
 
-def set_auth_key(value: str) -> None:
-    session[GOOGLE_OAUTH_KEY] = value
+def get_auth_key() -> Optional[str]:
+    auth_key = session.get(GOOGLE_OAUTH_KEY)
+    if auth_key is not None:
+        return authentication_service.verify_token(auth_key)
+
+def set_auth_key(value: str) -> bool:
+    if authentication_service.verify_token(value):
+        session[GOOGLE_OAUTH_KEY] = value
+        return True
+    return False
 
 def clear_auth_key() -> None:
     if GOOGLE_OAUTH_KEY in session:

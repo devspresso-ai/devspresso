@@ -8,15 +8,9 @@
 <div id="login" class="section-2 text-section">
     <h1 class="heading" style="text-align: center">Devspresso</h1>
     <div class="text-block">
-        Devspresso is an open-source project that allows you to write and modify code in your browser while supported by a large language model.
-        The intent of the project is to remove manual code editing as much as possible, and instead to let the model do the work.
-        Contributions are welcomed at the <a href="https://github.com/modelcamp/devspresso" target="_blank">GitHub repository</a>.
-        </br></br>
-        You will need an OpenAI API key to use this service. Alternate integrations with different service providers (and possibly self-hosted open source solutions) are in the works.
-        <a href="https://www.loom.com/share/9a167b3cdb684b39885731c44322134f" target="_blank">See a demo of the project in action.</a>
+        Log in with a supported authentication provider to start developing.
     </div>
     </br></br>
-    <h3 class="heading" style="text-align: center">Login to Devspresso to start coding</h3>
     <div id="g_id_onload"
          data-client_id="{{ google_client_id }}"
          data-login_uri="{{ url_for('authenticate_completion', _external=True) }}"
@@ -31,5 +25,11 @@
          data-logo_alignment="left">
     </div>
 </div>
+<script type="text/javascript">
+    let errorMessage = "{{ login_error }}"
+    if (errorMessage.length > 0) {
+        alert(errorMessage);
+    }
+</script>
 {% include "footer.html" %}
 {% endblock %}

@@ -1,73 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %} Devspresso {% endblock %}
+{% block title %} Devspresso | Login {% endblock %}
 {% block content %}
-<div class="div-block-3 w-clearfix">
-  <div class="div-block-2">
-    <div class="section wf-section" id="code-div">
-      <div class="w-row">
-        <div class="w-col w-col-6">
-          <select id="current-file-language-menu" name="dropdown-menu" class="w-select">
-            <option value="" disabled selected>Language</option>
-          </select>
-          <h2 id="current-file-title" class="heading">Current File</h2>
-          <div class="w-form">
-            <form id="wf-form-Current-File" name="wf-form-Current-File" data-name="Current File" method="get">
-              <pre id="current-file" class="code-editor"></pre>
-            </form>
-          </div>
-        </div>
-        <div class="w-col w-col-6">
-          <select id="output-language-menu" name="dropdown-menu" class="w-select">
-            <option value="" disabled selected>Language</option>
-          </select>
-          <h2 class="heading">Output</h2>
-          <div class="w-form">
-            <form id="wf-form-Output-Field" name="wf-form-Output-Field" data-name="Output Field" method="get">
-              <pre id="output-field" class="code-editor"></pre>
-            </form>
-          </div>
-        </div>
-      </div>
+<!-- Set referrer for localhost redirect -->
+<meta name="referrer" content="no-referrer-when-downgrade">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<div id="login" class="section-2 text-section">
+    <h1 class="heading" style="text-align: center">Devspresso</h1>
+    <div class="text-block">
+        Devspresso is an open-source project that allows you to write and modify code in your browser while supported by a large language model.
+        The intent of the project is to remove manual code editing as much as possible, and instead to let the model do the work.
+        Contributions are welcomed at the <a href="https://github.com/modelcamp/devspresso" target="_blank">GitHub repository</a>.
+        </br></br>
+        You will need an OpenAI API key to use this service. Alternate integrations with different service providers (and possibly self-hosted open source solutions) are in the works.
+        <a href="https://www.loom.com/share/9a167b3cdb684b39885731c44322134f" target="_blank">See a demo of the project in action.</a>
     </div>
-    <div id="prompt-container" class="section-2 wf-section">
-      <div class="form-block w-form">
-        <form id="wf-form-Prompt-Form" name="wf-form-Prompt-Form" data-name="Prompt Form" method="get" class="form-2">
-          <textarea id="prompt-field" name="Prompt-Field" maxlength="5000" data-name="Prompt Field" placeholder="Enter your code prompt" required="" class="field large w-input"></textarea>
-          <a id="go-button" data-wait="Please wait..." class="button form w-button">Go!</a>
-          <a id="clear-button" class="button form w-button">Clear</a>
-          <div class="container w-container"><input class="text-field w-input" maxlength="256" name="openai-organization-id" data-name="OpenAI Organization ID" placeholder="OpenAI Organization ID" id="openai-organization-id-field" value="{{ openai_organization_id_prefill_value or '' }}" required="">
-          </div>
-          <div class="container w-container"><input type="password" class="text-field w-input" maxlength="256" name="openai-api-key" data-name="OpenAI API Key" placeholder="OpenAI API Key" id="openai-api-key-field" value="{{ openai_key_prefill_value or '' }}" required="">
-            <div class="text-block-2">
-              <a href="https://platform.openai.com/docs/quickstart/add-your-api-key" target="_blank" class="link-2">What&#x27;s this?</a>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <div id="sidebar" class="div-block sidebar">
-    <label id="file-input-label" for="file-input" class="button form w-button">Choose a project folder</label>
-    <input type="file" id="file-input" webkitdirectory mozdirectory>
-    <input id="file-search-field" class="text-field w-input" maxlength="256" placeholder="Enter search text">
-    <label id="file-count-label">0 Files</label>
-    <div id="tree"></div>
-  </div>
-  {% include "footer.html" %}
+    </br></br>
+    <a id="login_link" href="{{ url_for('login') }}" class="heading" style="text-align: center">Login to Devspresso to start coding</a>
 </div>
-<link rel="stylesheet" href="{{ url_for('static', filename='tree_viewer/treeview.vanilla.css') }}" />
-<script src="{{ url_for('static', filename='tree_viewer/treeview.vanilla.js') }}" type="module" charset="utf-8"></script>
-<script src="{{ url_for('static', filename='js/src-noconflict/ace.js') }}" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-  let inferencePath = "{{ url_for('infer') }}"
-  let inferenceParamName = "{{ inference_prompt_name }}"
-  let inferenceValueResponseKey = "{{ inference_value_response_key }}"
-  let inferenceLanguageResponseKey = "{{ inference_language_response_key }}"
-  let currentFileTextParamName = "{{ current_file_text_param_name }}"
-  let openaiAPIKeyParamName = "{{ openai_key_param_name }}"
-  let openaiOrganizationIDParamName = "{{ openai_organization_id_param_name }}"
+    if ({{ 'true' if is_authenticated else 'false' }}) {
+        document.getElementById("login_link").style.display = "none";
+    }
 </script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/NetworkUtility.js') }}"></script>
-<script type="module" src="{{ url_for('static', filename='js/Index.js') }}"></script>
+{% include "footer.html" %}
 {% endblock %}
