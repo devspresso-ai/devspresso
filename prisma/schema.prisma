@@ -1,0 +1,23 @@
+Here's the updated `schema.prisma` file with the new `User` model:
+
+```
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  fullName  String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+```
+
+Please note that you will also need to run the `prisma migrate dev` command to apply the changes to your database schema.
