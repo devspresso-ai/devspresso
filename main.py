@@ -4,7 +4,7 @@ import inferences_service
 import os
 import session_manager
 from constants import INFERENCE_VALUE_RESPONSE_KEY, INFERENCE_LANGUAGE_RESPONSE_KEY, OPENAI_KEY_PARAM_NAME, \
-    OPENAI_ORGANIZATION_ID_PARAM_NAME, CURRENT_FILE_TEXT_PARAM_NAME
+    OPENAI_ORGANIZATION_ID_PARAM_NAME, CURRENT_FILE_TEXT_PARAM_NAME, ENVIRONMENT_CONTEXT_PARAM_NAME
 from inference_models.chat_helpers import CodeInferenceResult
 from dotenv import load_dotenv
 from inference_models import inference_model
@@ -39,6 +39,7 @@ def develop():
         inference_value_response_key=INFERENCE_VALUE_RESPONSE_KEY,
         inference_language_response_key=INFERENCE_LANGUAGE_RESPONSE_KEY,
         current_file_text_param_name=CURRENT_FILE_TEXT_PARAM_NAME,
+        environment_context_param_name=ENVIRONMENT_CONTEXT_PARAM_NAME,
         openai_key_param_name=OPENAI_KEY_PARAM_NAME,
         openai_organization_id_param_name=OPENAI_ORGANIZATION_ID_PARAM_NAME,
         openai_key_prefill_value=openai_key,

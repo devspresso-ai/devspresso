@@ -4,6 +4,7 @@
 // - inferenceValueResponseKey
 // - inferenceLanguageResponseKey
 // - currentFileTextParamName
+// - environmentContextParamName
 // - openaiAPIKeyParamName
 // - openaiOrganizationIDParamName
 import {VanillaTreeView} from "../tree_viewer/treeview.vanilla.js";
@@ -126,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentFileField = document.getElementById('current-file');
     let outputField = document.getElementById('output-field');
     let promptField = document.getElementById('prompt-field');
+    let contextField = document.getElementById('context-field');
     let apiKeyField = document.getElementById('openai-api-key-field');
     let openaiOrganizationIDField = document.getElementById('openai-organization-id-field');
     let fileSearchField = document.getElementById('file-search-field');
@@ -192,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let dict = {};
         dict[inferenceParamName] = promptField.value;
         dict[currentFileTextParamName] = currentFileEditor.getValue();
+        dict[environmentContextParamName] = contextField.value;
         params.append(openaiAPIKeyParamName, apiKey);
         params.append(openaiOrganizationIDParamName, organizationID);
         post(inferencePath, params, JSON.stringify(dict), (output) => {
@@ -211,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add clear button action.
     let clrBtn = document.getElementById('clear-button');
     clrBtn.addEventListener('click', () => {
-        clearFields(promptField, outputEditor, currentFileEditor, true);
+        clearFields(null, outputEditor, currentFileEditor, true);
     });
 
     // All current files
