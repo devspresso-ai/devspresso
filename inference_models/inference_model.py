@@ -1,5 +1,6 @@
 from typing import Dict, Optional
-from constants import CURRENT_FILE_TEXT_PARAM_NAME
+from constants import CURRENT_FILE_TEXT_PARAM_NAME, ENVIRONMENT_CONTEXT_PARAM_NAME
+
 
 class InferencePrompt:
 
@@ -28,6 +29,7 @@ class InferenceModel:
 
     inference_prompt_name = "inference_prompt"
     current_file_text_name = CURRENT_FILE_TEXT_PARAM_NAME
+    environment_context_name = ENVIRONMENT_CONTEXT_PARAM_NAME
 
     def __init__(self):
         self.default_prompt_seed = ""
