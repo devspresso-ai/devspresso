@@ -70,7 +70,7 @@ def authenticate_completion():
 
 @app.route ("/logout", methods=['POST'])
 def logout():
-    session_manager.clear_auth_key()
+    session_manager.clear()
     return redirect(url_for('index'))
 
 @app.route("/infer", methods=['POST'])

@@ -66,3 +66,6 @@ def set_auth_key(value: str) -> bool:
 def clear_auth_key() -> None:
     if GOOGLE_OAUTH_KEY in session:
         del session[GOOGLE_OAUTH_KEY]
+
+def clear() -> None:
+    session.clear()
