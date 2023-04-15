@@ -42,7 +42,7 @@
               </div>
             </div>
             <a id="go-button" data-wait="Please wait..." class="button form w-button">Go!</a>
-            <a id="clear-button" class="button form w-button">Clear</a>
+            <a id="clear-button" class="button form w-button">Clear Context</a>
             <div class="container w-container"><input class="text-field w-input" maxlength="256" name="openai-organization-id" data-name="OpenAI Organization ID" placeholder="OpenAI Organization ID" id="openai-organization-id-field" value="{{ openai_organization_id_prefill_value or '' }}" required="">
             </div>
           <div class="container w-container"><input type="password" class="text-field w-input" maxlength="256" name="openai-api-key" data-name="OpenAI API Key" placeholder="OpenAI API Key" id="openai-api-key-field" value="{{ openai_key_prefill_value or '' }}" required="">
@@ -77,5 +77,5 @@
   let openaiOrganizationIDParamName = "{{ openai_organization_id_param_name }}"
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/NetworkUtility.js') }}"></script>
-<script type="module" src="{{ url_for('static', filename='js/Index.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/Develop.js') }}"></script>
 {% endblock %}
